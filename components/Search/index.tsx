@@ -39,8 +39,8 @@ const Search = (): JSX.Element => {
   const { data: searchResult, refetch } = useGetSearchResult(params);
 
   useEffect(() => {
-    if (totalCount != searchResult?.data.meta.total_count)
-      setTotalCount(searchResult?.data.meta.total_count);
+    if (totalCount != searchResult?.data.meta.pageable_count)
+      setTotalCount(searchResult?.data.meta.pageable_count);
   }, [searchResult]);
 
   useEffect(() => {
@@ -199,6 +199,7 @@ const Search = (): JSX.Element => {
             onChange={(event: React.ChangeEvent<unknown>, page: number) => {
               setParams({ ...params, page: page });
             }}
+            page={params.page}
           />
         ) : null}
       </Box>
