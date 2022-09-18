@@ -130,7 +130,7 @@ const BookItem = (props: Props) => {
           }}
         >
           <Box sx={{ margin: "0px 48px", position: "relative" }}>
-            <img width={"209px"} height={"278px"} src={props.item.thumbnail} />
+            <img width={"209px"} height={"298px"} src={props.item.thumbnail} />
             <IconButton
               sx={{
                 left: "164px",
@@ -186,7 +186,9 @@ const BookItem = (props: Props) => {
             >
               책소개
             </Typography>
-            <Typography>{props.item.contents}</Typography>
+            <Typography sx={{ height: "200px", overflow: "scroll" }}>
+              {props.item.contents}
+            </Typography>
           </Box>
           <Box
             sx={{
