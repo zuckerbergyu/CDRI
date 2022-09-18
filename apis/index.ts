@@ -11,6 +11,10 @@ export const getSearchResult = async (params: SearchOptions) => {
   return kakao.get("/v3/search/book", { params });
 };
 export const useGetSearchResult = (params: SearchOptions) =>
-  useQuery(["search", params.page, params.query], () =>
-    getSearchResult(params)
+  useQuery(
+    ["search", params.query, params.page],
+    () => getSearchResult(params),
+    {
+      enabled: false,
+    }
   );

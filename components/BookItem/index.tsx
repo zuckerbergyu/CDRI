@@ -96,7 +96,6 @@ const BookItem = (props: Props) => {
             }}
           >
             구매하기
-            {/* Todo 네이버 채긍로 이동하는거 만들기 */}
           </Box>
           <Box
             sx={{

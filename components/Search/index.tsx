@@ -7,8 +7,7 @@ import SearchField from "./_comps/SearchField";
 import Popup from "./_comps/Popup";
 import BookItem from "../BookItem";
 import { useGetSearchResult } from "../../apis";
-import CircularProgress from "@mui/material/CircularProgress";
-import { SearchOptions, Documents } from "../../types";
+import { SearchOptions } from "../../types";
 import { Colors } from "../../constants/theme";
 
 /**
@@ -26,35 +25,33 @@ const defaultParams: SearchOptions = {
   size: 10,
   target: "title",
 };
-let params: SearchOptions = {
-  query: "",
-  sort: "accuracy",
-  page: 1,
-  size: 10,
-  target: "title",
-};
 
 const options = ["title", "person", "publisher"];
 
 const Search = (): JSX.Element => {
   const [searchInput, setSearchInput] = useState("");
-
   const [searchInputDetail, setSearchInputDetail] = useState("");
 
-  // -----------검색-------------------------------------------------
-
-  const { data: searchResult, refetch } = useGetSearchResult(params);
+  const [params, setParams] = useState<SearchOptions>(defaultParams);
   const [totalCount, setTotalCount] = useState(0);
 
+  // 검색
+  const { data: searchResult, refetch } = useGetSearchResult(params);
+
   useEffect(() => {
-    console.log(searchResult?.data.documents);
     if (totalCount != searchResult?.data.meta.total_count)
       setTotalCount(searchResult?.data.meta.total_count);
   }, [searchResult]);
 
-  // -----------검색-------------------------------------------------
+  useEffect(() => {
+    if (params.query) {
+      refetch();
+    }
+  }, [params]);
 
-  // 상세검색 팝업 ------------------------------------
+  // 상세검색
+  const [detailOption, setDetailOption] = useState(0);
+
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -64,17 +61,6 @@ const Search = (): JSX.Element => {
   };
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
-
-  // 상세검색 팝업 ------------------------------------
-
-  // 상세검색 옵션 처리 ------------------------------------
-
-  const [detailOption, setDetailOption] = useState(0);
-  useEffect(() => {
-    console.log("여기서 변하는지", detailOption);
-  }, [detailOption]);
-
-  // 상세검색 옵션 처리 ------------------------------------
 
   return (
     <Box>
@@ -90,25 +76,26 @@ const Search = (): JSX.Element => {
             onChange={setSearchInput}
             placeholder="검색어를 입력하세요"
             onSubmit={() => {
-              params.query = searchInput;
-              refetch();
+              setDetailOption(0);
+              setParams({ ...defaultParams, query: searchInput });
+              if (searchInputDetail) setSearchInputDetail("");
             }}
           />
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Button
               sx={{
-                background: Colors.palette.White,
-                color: Colors.text.Subtitle,
                 borderWidth: 1,
-                borderStyle: "solid",
                 fontWeight: 500,
                 fontSize: "14px",
                 padding: "3px 5px",
                 marginLeft: "16px",
+                borderStyle: "solid",
                 borderRadius: "8px",
+                color: Colors.text.Subtitle,
+                background: Colors.palette.White,
                 ":hover": {
-                  backgroundColor: Colors.palette.White,
                   color: Colors.text.Subtitle,
+                  backgroundColor: Colors.palette.White,
                 },
               }}
               aria-describedby={id}
@@ -144,17 +131,20 @@ const Search = (): JSX.Element => {
             onChange={setSearchInputDetail}
             placeholder="검색어 입력"
             onSubmit={() => {
-              console.log("detail : ", detailOption);
-              params.target = options[detailOption];
-              params.query = searchInputDetail;
-              refetch();
+              setParams({
+                ...params,
+                query: searchInputDetail,
+                target: options[detailOption],
+              });
               handleClose();
-              params = defaultParams;
+              if (searchInput) {
+                setSearchInput("");
+              }
             }}
             detailOption={setDetailOption}
+            selectedIndex={detailOption}
           />
         </Popover>
-
         <Typography
           sx={{
             fontSize: "16px",
@@ -176,7 +166,7 @@ const Search = (): JSX.Element => {
           alignItems: "center",
         }}
       >
-        {totalCount ? (
+        {searchResult ? (
           searchResult?.data.documents.map((item: any) => {
             return <BookItem item={item} />;
           })
@@ -207,8 +197,7 @@ const Search = (): JSX.Element => {
             }}
             count={Math.floor((totalCount + 9) / 10)}
             onChange={(event: React.ChangeEvent<unknown>, page: number) => {
-              params.page = page;
-              refetch();
+              setParams({ ...params, page: page });
             }}
           />
         ) : null}

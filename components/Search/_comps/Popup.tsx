@@ -26,12 +26,16 @@ type Props = {
   onChange: (value: string) => void;
   onSubmit: () => void;
   detailOption: (value: number) => void;
+  selectedIndex?: number | 0;
 };
 
 export default function BasicPopover(props: Props) {
   // -----------옵션 선택---------------
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
+  React.useEffect(() => {
+    if (props.selectedIndex) setSelectedIndex(props.selectedIndex);
+  }, []);
   const open = Boolean(anchorEl);
   const handleClickListItem = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
