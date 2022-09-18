@@ -166,7 +166,7 @@ const Search = (): JSX.Element => {
           alignItems: "center",
         }}
       >
-        {searchResult ? (
+        {searchResult && totalCount ? (
           searchResult?.data.documents.map((item: any) => {
             return <BookItem item={item} />;
           })
