@@ -72,7 +72,7 @@ const BookItem = (props: Props) => {
           sx={{ fontSize: "18px", fontWeight: 700, marginRight: "16px" }}
         >
           {props.item.sale_price === -1
-            ? props.item.price
+            ? comma(props.item.price as number)
             : comma(props.item.sale_price as number)}
           원
         </Typography>
@@ -236,7 +236,9 @@ const BookItem = (props: Props) => {
                 </Typography>
                 <Typography
                   sx={{
-                    textDecorationLine: "line-through",
+                    textDecorationLine: `${
+                      props.item.sale_price !== -1 ? "line-through" : "none"
+                    }`,
                     fontWeight: 300,
                     fontSize: "18px",
                     color: Colors.text.Primary,
@@ -245,7 +247,7 @@ const BookItem = (props: Props) => {
                   {comma(props.item.price as number)}
                 </Typography>
               </Box>
-              {props.item.sale_price ? (
+              {props.item.sale_price !== -1 ? (
                 <Box
                   sx={{
                     display: "flex",
