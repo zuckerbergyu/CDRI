@@ -15,3 +15,9 @@ export interface Documents {
   price?: number;
   sale_price?: number;
 }
+
+export interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}

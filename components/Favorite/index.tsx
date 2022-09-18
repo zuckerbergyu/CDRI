@@ -1,6 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import favoritList from "../../libs/favoritList";
 import BookItem from "../BookItem";
 import Pagination from "@mui/material/Pagination";

@@ -43,7 +43,7 @@ const Search = (): JSX.Element => {
 
   // -----------검색-------------------------------------------------
 
-  const { data: searchResult, refetch, isLoading } = useGetSearchResult(params);
+  const { data: searchResult, refetch } = useGetSearchResult(params);
   const [totalCount, setTotalCount] = useState(0);
 
   useEffect(() => {
