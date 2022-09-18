@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import { Colors } from "../../constants/theme";
 import { Documents } from "../../types";
 import ArrowDown from "../Icons/ArrowDown";
@@ -11,17 +10,15 @@ import comma from "../../libs/comma";
 import HeartIcon from "../Icons/HeartIcon";
 import { IconButton } from "@mui/material";
 
-/**
- * 찜하기 되어있으면 썸네일 상단에 하트 이미지 생김
- * 다시 눌렀을때 해당 그거 제거하는거 만들기
- */
-
 type Props = {
   item: Documents;
 };
 
 const BookItem = (props: Props) => {
   const [isDetailShow, setIsDetailShow] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(
+    favoritList.isFavorite(props.item)
+  );
 
   return (
     <Box>
@@ -29,8 +26,8 @@ const BookItem = (props: Props) => {
         sx={{
           display: "flex",
           alignItems: "center",
-          borderBottom: `1px solid ${Colors.palette.LightGray}`,
           justifyContent: "space-between",
+          borderBottom: `1px solid ${Colors.palette.LightGray}`,
         }}
       >
         <Box sx={{ margin: "16px 48px", position: "relative" }}>
@@ -44,8 +41,8 @@ const BookItem = (props: Props) => {
           >
             <HeartIcon
               size={12}
-              color={favoritList.isFavorite(props.item) ? "red" : "white"}
-              fill={favoritList.isFavorite(props.item) ? "red" : ""}
+              fill={isFavorite ? "red" : ""}
+              color={isFavorite ? "red" : "white"}
             />
           </Box>
         </Box>
@@ -79,17 +76,17 @@ const BookItem = (props: Props) => {
         <Box sx={{ display: "flex" }}>
           <Box
             sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: "8px",
               width: "115px",
               height: "48px",
-              background: Colors.palette.Primary,
-              color: Colors.palette.White,
+              display: "flex",
               fontSize: "16px",
               fontWeight: 500,
               marginRight: "8px",
+              borderRadius: "8px",
+              alignItems: "center",
+              justifyContent: "center",
+              color: Colors.palette.White,
+              background: Colors.palette.Primary,
             }}
             onClick={() => {
               props.item.url && window.open(props.item.url, "_blank");
@@ -99,16 +96,16 @@ const BookItem = (props: Props) => {
           </Box>
           <Box
             sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: "8px",
               width: "115px",
               height: "48px",
-              background: Colors.palette.LightGray,
-              color: Colors.text.Secondary,
-              fontSize: "16px",
+              display: "flex",
               fontWeight: 500,
+              fontSize: "16px",
+              borderRadius: "8px",
+              alignItems: "center",
+              justifyContent: "center",
+              color: Colors.text.Secondary,
+              background: Colors.palette.LightGray,
             }}
             onClick={() => {
               setIsDetailShow(!isDetailShow);
@@ -119,12 +116,11 @@ const BookItem = (props: Props) => {
           </Box>
         </Box>
       </Box>
-      {/*----------- 여기서부터 상세보기 ----------- */}
       {isDetailShow ? (
         <Box
           sx={{
-            padding: "25px 0 39px 0px",
             display: "flex",
+            padding: "25px 0 39px 0px",
             borderBottom: `1px solid ${Colors.palette.LightGray}`,
           }}
         >
@@ -136,18 +132,18 @@ const BookItem = (props: Props) => {
                 position: "absolute",
               }}
               onClick={() => {
-                // ToDO :여기서 바꾸는것을 밖으로 끄집어내기
                 if (favoritList.isFavorite(props.item)) {
                   favoritList.clearItem(props.item);
                 } else {
                   favoritList.push(props.item);
                 }
+                setIsFavorite(favoritList.isFavorite(props.item));
               }}
             >
               <HeartIcon
                 size={30}
-                color={favoritList.isFavorite(props.item) ? "red" : "white"}
-                fill={favoritList.isFavorite(props.item) ? "red" : ""}
+                fill={isFavorite ? "red" : ""}
+                color={isFavorite ? "red" : "white"}
               />
             </IconButton>
           </Box>
@@ -192,23 +188,23 @@ const BookItem = (props: Props) => {
           <Box
             sx={{
               display: "flex",
-              flexDirection: "column",
               alignItems: "end",
+              flexDirection: "column",
               justifyContent: "space-between",
             }}
           >
             <Box
               sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: "8px",
                 width: "115px",
                 height: "48px",
-                background: Colors.palette.LightGray,
-                color: Colors.text.Secondary,
-                fontSize: "16px",
+                display: "flex",
                 fontWeight: 500,
+                fontSize: "16px",
+                borderRadius: "8px",
+                alignItems: "center",
+                justifyContent: "center",
+                color: Colors.text.Secondary,
+                background: Colors.palette.LightGray,
               }}
               onClick={() => {
                 setIsDetailShow(!isDetailShow);
@@ -220,8 +216,8 @@ const BookItem = (props: Props) => {
             <Box
               sx={{
                 display: "flex",
-                flexDirection: "column",
                 alignItems: "end",
+                flexDirection: "column",
               }}
             >
               <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -229,8 +225,8 @@ const BookItem = (props: Props) => {
                   sx={{
                     fontWeight: 500,
                     fontSize: "10px",
-                    color: Colors.text.Subtitle,
                     marginRight: "8px",
+                    color: Colors.text.Subtitle,
                   }}
                 >
                   원가
@@ -260,8 +256,8 @@ const BookItem = (props: Props) => {
                     sx={{
                       fontWeight: 500,
                       fontSize: "10px",
-                      color: Colors.text.Subtitle,
                       marginRight: "8px",
+                      color: Colors.text.Subtitle,
                     }}
                   >
                     할인가
@@ -280,16 +276,16 @@ const BookItem = (props: Props) => {
 
               <Box
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: "8px",
                   width: "240px",
                   height: "48px",
-                  background: Colors.palette.Primary,
-                  color: Colors.palette.White,
-                  fontSize: "16px",
+                  display: "flex",
                   fontWeight: 500,
+                  fontSize: "16px",
+                  borderRadius: "8px",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: Colors.palette.White,
+                  background: Colors.palette.Primary,
                 }}
                 onClick={() => {
                   props.item.url && window.open(props.item.url, "_blank");

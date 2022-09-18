@@ -1,18 +1,13 @@
 import * as React from "react";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import ArrowDown from "../../Icons/ArrowDown";
-
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-
 import InputBase from "@mui/material/InputBase";
-import { Stack } from "@mui/material";
-import SearchIcon from "../../Icons/Search";
 import CloseIcon from "../../Icons/CloseIcon";
 import { Colors } from "../../../constants/theme";
 import { IconButton } from "@mui/material";
@@ -20,7 +15,7 @@ import { IconButton } from "@mui/material";
 const options = ["제목", "저자명", "출판사"];
 
 type Props = {
-  onClose: (e: KeyboardEvent | MouseEvent) => void;
+  onClose: () => void;
   placeholder?: string | null;
   value: string;
   onChange: (value: string) => void;
@@ -30,12 +25,13 @@ type Props = {
 };
 
 export default function BasicPopover(props: Props) {
-  // -----------옵션 선택---------------
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
+
   React.useEffect(() => {
     if (props.selectedIndex) setSelectedIndex(props.selectedIndex);
   }, []);
+
   const open = Boolean(anchorEl);
   const handleClickListItem = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -48,10 +44,10 @@ export default function BasicPopover(props: Props) {
     props.detailOption(index);
     setAnchorEl(null);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
-  // -----------옵션 선택---------------
 
   return (
     <Box sx={{ margin: "12px 24px 32px", width: "360px", height: "160px" }}>
