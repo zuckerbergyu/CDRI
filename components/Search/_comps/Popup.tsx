@@ -134,7 +134,7 @@ export default function BasicPopover(props: Props) {
         >
           <Box
             sx={{
-              background: Colors.palette.Gray,
+              background: Colors.palette.White,
               borderBottom: `1px solid ${Colors.palette.Primary}`,
               height: "46px",
               width: "250px",
