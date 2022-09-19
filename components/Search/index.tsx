@@ -3,12 +3,15 @@ import { useState, useEffect } from "react";
 import Popover from "@mui/material/Popover";
 import { Box, Typography, Button } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
+import PaginationItem from "@mui/material/PaginationItem";
 import SearchField from "./_comps/SearchField";
 import Popup from "./_comps/Popup";
 import BookItem from "../BookItem";
 import { useGetSearchResult } from "../../apis";
 import { SearchOptions } from "../../types";
 import { Colors } from "../../constants/theme";
+import ArrowLeft from "../Icons/ArrowLeft";
+import ArrowRight from "../Icons/ArrowRight";
 
 /**
  * requestParams
@@ -200,6 +203,25 @@ const Search = (): JSX.Element => {
               setParams({ ...params, page: page });
             }}
             page={params.page}
+            siblingCount={1}
+            boundaryCount={2}
+            renderItem={(item) => (
+              <PaginationItem
+                sx={{
+                  borderRadius: "4px",
+                  border: `1px solid ${Colors.palette.Gray}`,
+                  background: Colors.palette.White,
+                  color: Colors.palette.Gray,
+                  "&.Mui-selected": {
+                    background: Colors.palette.Primary,
+                    color: Colors.palette.White,
+                    border: 0,
+                  },
+                }}
+                components={{ previous: ArrowLeft, next: ArrowRight }}
+                {...item}
+              />
+            )}
           />
         ) : null}
       </Box>

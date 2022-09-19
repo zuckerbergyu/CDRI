@@ -4,7 +4,7 @@ export const Colors = {
   palette: {
     Primary: "#4880EE",
     Red: "#E84118",
-    Gray: "##DADADA",
+    Gray: "#DADADA",
     LightGray: "#F2F4F6",
     White: "#FFFFFF",
     Black: "#222222",
