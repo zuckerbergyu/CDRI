@@ -48,6 +48,5 @@ const styles = {
       md: "auto",
       lg: "auto",
     },
-    // position: { xs: "relative", sm: "relative" },
   },
 };

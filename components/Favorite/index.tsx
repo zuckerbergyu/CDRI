@@ -1,13 +1,25 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
 import favoritList from "../../libs/favoritList";
 import BookItem from "../BookItem";
 import Pagination from "@mui/material/Pagination";
 import { Colors } from "../../constants/theme";
 
+const sliceFavoritList = (favoritList: any) => {
+  let result = [];
+  let i = 0;
+  if (favoritList) {
+    for (i = 0; i < favoritList.length; i += 10)
+      result.push(favoritList.slice(i, i + 10));
+  }
+  return result;
+};
+
 const Favorite = (): JSX.Element => {
+  const [currentPage, setCurrentPage] = useState(1);
   const searchResult = favoritList.get();
   const totalCount = searchResult.length;
+  const paginationList = sliceFavoritList(searchResult);
 
   return (
     <Box>
@@ -28,7 +40,7 @@ const Favorite = (): JSX.Element => {
         </Typography>
         <Box sx={{ margin: "10px" }}>
           {totalCount ? (
-            searchResult?.map((item: any) => {
+            paginationList[currentPage - 1].map((item: any) => {
               return <BookItem item={item} />;
             })
           ) : (
@@ -58,8 +70,9 @@ const Favorite = (): JSX.Element => {
               }}
               count={Math.floor((totalCount + 9) / 10)}
               onChange={(event: React.ChangeEvent<unknown>, page: number) => {
-                //TODO:  여기에 페이지 넘기는것 추가하기
+                setCurrentPage(page);
               }}
+              page={currentPage}
             />
           ) : null}
         </Box>
